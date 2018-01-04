@@ -63,7 +63,7 @@ for connection in sakila_connections:
         extract = MySqlToGoogleCloudStorageOperator(
             task_id="extract_mysql_%s_%s"%(connection,table),
             mysql_conn_id=connection,
-            google_cloud_storage_conn_id='gcp_test',
+            #google_cloud_storage_conn_id='gcp_test',
             sql="SELECT *, '%s' as source FROM sakila.%s"%(connection,table),
             bucket='ghen-airflow',
             filename="%s/%s/%s{}.json"%(connection,table,table),
@@ -72,8 +72,8 @@ for connection in sakila_connections:
 
         load = GoogleCloudStorageToBigQueryOperator(
             task_id="load_bq_%s_%s"%(connection,table),
-            bigquery_conn_id='gcp_test',
-            google_cloud_storage_conn_id='gcp_test',
+            #bigquery_conn_id='gcp_test',
+            #google_cloud_storage_conn_id='gcp_test',
             bucket='ghen-airflow',
             destination_project_dataset_table="spark-test-173322.%s.%s"%(connection,table),
             source_objects=["%s/%s/%s*.json"%(connection,table,table)],
@@ -81,7 +81,7 @@ for connection in sakila_connections:
             source_format='NEWLINE_DELIMITED_JSON',
             create_disposition='CREATE_IF_NEEDED',
             write_disposition='WRITE_TRUNCATE',
-            project_id='spark-test-173322',
+            #project_id='spark-test-173322',
             dag=dag)
 
         load.set_upstream(extract)
