@@ -16,7 +16,7 @@ dag = DAG('mysql_to_gcs', default_args=default_args)
 export_actor = MySqlToGoogleCloudStorageOperator(
     task_id='extract_actors',
     mysql_conn_id='sakila_test',
-    google_cloud_storage_conn_id='gcp_test',
+    #google_cloud_storage_conn_id='gcp_test', //This produces an invalid arguments parsed error 
     sql='SELECT * FROM sakila.actor',
     bucket='ghen-airflow',
     filename='sakila/actors/actors{}.json',
